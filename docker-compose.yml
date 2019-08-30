@@ -1,0 +1,86 @@
+# source https://medium.com/@isurunuwanthilaka/get-into-mqtt-in-2-minutes-python-docker-5d4e8b55cf1c
+version: "3"
+
+services:
+  mqtt:
+    image: toke/mosquitto
+    networks:
+      - web
+    container_name: mqtt
+    expose:
+      - 1883
+    ports:
+      - 1883:1883
+    restart: unless-stopped
+
+  sensor:
+    image: image/sensor
+    networks:
+      - web
+    links:
+      - ingestion
+
+  proxy:
+    image: dockercloud/haproxy
+    environment:
+      - BALANCE=leastconn
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
+    networks:
+      - web
+    links:
+      - ingestion
+
+  ingestion:
+    image: image/ingestion
+    networks:
+      - web
+    ports:
+      - 5000
+    links:
+      - mqtt
+    environment:
+     - SERVICE_PORTS=5000
+
+  storage:
+    image: image/storage
+    networks:
+      - web
+    links:
+      - mqtt
+    environment:
+      - POSTGRES_USER=testusr
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=testdb
+
+  postgres:
+    restart: always
+    image: postgres:10
+    volumes:
+       - db-data:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=testusr
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=testdb
+    ports:
+      - "5432:5432"
+    networks:
+      - web
+
+# source https://medium.com/@nirgn/load-balancing-applications-with-haproxy-and-docker-d719b7c5b231
+  # grafana:
+  #   image: grafana/grafana
+  #   ports: 
+  #     - 3000
+  #   networks:
+  #     - web
+  #   environment:
+  #    - SERVICE_PORTS=3000
+
+networks:
+  web:
+
+volumes:
+  db-data:

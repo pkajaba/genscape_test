@@ -1,0 +1,7 @@
+FROM python:3.7.4
+ADD requirements.txt .
+RUN pip install -r requirements.txt
+ADD ingestion_component /src
+
+WORKDIR /src
+CMD ["/src/app.py"]
