@@ -43,3 +43,7 @@ In order to test this properly, we have to increase number of sensor containers 
 ```docker-compose scale scale sensor=10```
 
 HAProxy will loadbalance these requests across freshly created ingestion components.
+
+## Visualisation in Grafana
+As part of system Grafana can be used as visualisation tool of Sensor data. All you have to do is to login on `localhost:3000` with admin:admin credetials and after that you can create dashboard with sensor data. More information about that can be found here: https://grafana.com/docs/guides/getting_started/#dashboards-panels-the-building-blocks-of-grafana
+
