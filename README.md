@@ -23,5 +23,23 @@ These are only required steps to get this tech demo working. To start you have t
 
 ## Design of system
 
-[System diagram](diagram.png)
+![System diagram](diagram.png)
 
+### Sensor component
+Sensor component sends data every 10 seconds to ingestion component. It picks unique uuid every time new docker container starts.
+
+### Ingestion component
+Ingestion component is simple flask app, which receives data from sensor component, enriches it with temperature in celsius and forwards this data to MQTT queue.
+
+### Storage component
+Storage component takes messages from queue and stores it into PostgreSQL database.
+
+## Scaling of system
+HAProxy https://www.haproxy.org is part of system and it's used for load balancing sensor message, which are comming to ingestion component. Number of replicas of Ingestion component can be changed this way (after system was started with docker-compose up):
+
+```docker-compose scale scale ingestion=10```
+
+In order to test this properly, we have to increase number of sensor containers running, which can be done in similar way:
+```docker-compose scale scale sensor=10```
+
+HAProxy will loadbalance these requests across freshly created ingestion components.
