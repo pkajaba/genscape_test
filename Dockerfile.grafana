@@ -1,2 +1,4 @@
 FROM grafana/grafana
 ADD ./grafana/datasource.yml /etc/grafana/provisioning/datasources
+ADD ./grafana/dashboard.yml /etc/grafana/provisioning/dashboards
+ADD ./grafana/dashboard.json /etc/grafana/provisioning/dashboards
