@@ -20,6 +20,7 @@ services:
     links:
       - ingestion
 
+# source https://medium.com/@nirgn/load-balancing-applications-with-haproxy-and-docker-d719b7c5b231
   proxy:
     image: dockercloud/haproxy
     environment:
@@ -51,9 +52,9 @@ services:
     links:
       - mqtt
     environment:
-      - POSTGRES_USER=testusr
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=testdb
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
 
   postgres:
     restart: always
@@ -61,23 +62,24 @@ services:
     volumes:
        - db-data:/var/lib/postgresql
     environment:
-      - POSTGRES_USER=testusr
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=testdb
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
     ports:
       - "5432:5432"
     networks:
       - web
 
-# source https://medium.com/@nirgn/load-balancing-applications-with-haproxy-and-docker-d719b7c5b231
-  # grafana:
-  #   image: grafana/grafana
-  #   ports: 
-  #     - 3000
-  #   networks:
-  #     - web
-  #   environment:
-  #    - SERVICE_PORTS=3000
+  grafana:
+    image: custom/grafana
+    ports: 
+      - 3000:3000
+    networks:
+      - web
+    environment:
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_DB=$POSTGRES_DB
 
 networks:
   web:
