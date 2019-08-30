@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+autopep8 = "*"
+
+[packages]
+requests = "*"
+paho-mqtt = "*"
+pyyaml = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+sqlalchemy-migrate = "*"
+psycopg2 = "*"
+psycopg2-binary = "*"
+
+[requires]
+python_version = "3.7"

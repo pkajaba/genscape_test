@@ -1,0 +1,6 @@
+FROM python:3.7.4
+ADD requirements.txt .
+RUN pip install -r requirements.txt
+ADD sensor_component /src
+WORKDIR /src
+CMD ["/src/sensor.py"]
