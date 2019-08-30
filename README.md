@@ -9,7 +9,7 @@ After succesfull installation of docker, you have to execute script `build.sh`, 
 
 ```./build.sh```
 
-Once images are built, you have to create `.env` file from teplate. Template contains default values for postgres, but it can contain other variables as well (in case of future developemnt and addition of extra servires):
+This should take few minutes. Once images are built, you have to create `.env` file from teplate. Template contains default values for postgres, but it can contain other variables as well (in case of future developemnt and addition of extra servires):
 
 
 ```cp env_template .env```
@@ -46,4 +46,6 @@ HAProxy will loadbalance these requests across freshly created ingestion compone
 
 ## Visualisation in Grafana
 As part of system Grafana can be used as visualisation tool of Sensor data. All you have to do is to login on `localhost:3000` with admin:admin credetials and after that you can create dashboard with sensor data. More information about that can be found here: https://grafana.com/docs/guides/getting_started/#dashboards-panels-the-building-blocks-of-grafana
+
+However, all you have to do is add new dashbard (click New Dasbhoard), than click add new query and you should be able to query all data.
 
